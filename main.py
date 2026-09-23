@@ -31,7 +31,7 @@ def get_clean_models(google_maps_results: list[dict]) -> list[Model]:
 
     return instances
 
-def upload_files_s3(raw: str, locality: str, category: str) -> bool:
+def upload_files_s3(raw: list[dict], locality: str, category: str) -> bool:
 
     s3_client = boto3.client('s3')
     bucket = os.getenv("S3_BUCKET_NAME")
@@ -51,14 +51,14 @@ def upload_files_s3(raw: str, locality: str, category: str) -> bool:
     return True
     
 if __name__ == "__main__":
-    query = "burger warsaw"
+    queries = [
+        {"query": "restaurants in New York", "locality": "New York", "category": "restaurants"}
+    ]
 
-    locality = query.split()[1]
-    category = query.split()[0]
+    for q in queries:
+        google_maps_results_raw = get_google_maps_raw(query=q["query"], limit=5, language="en")
 
-    google_maps_results_raw = get_google_maps_raw(query=query, limit=5, language="en")
-
-    if upload_files_s3(google_maps_results_raw, locality, category):
-        print("File uploaded successfully.")
-    else:
-        print("File upload failed.")
+        if upload_files_s3(google_maps_results_raw, q["locality"], q["category"]):
+            print("File uploaded successfully.")
+        else:
+            print("File upload failed.")
