@@ -1,0 +1,13 @@
+[project]
+name = "google-search-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.43.100",
+    "dotenv>=0.9.9",
+    "outscraper>=6.0.4",
+    "pydantic>=2.13.5",
+    "typesafe-sdk>=0.7.1",
+]
