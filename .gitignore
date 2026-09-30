@@ -6,11 +6,12 @@ dist/
 wheels/
 *.egg-info
 
+# Application-specific files
+output/
+logs/
+
 # Virtual environments
 .venv
-
-# API responses
-output/
 
 # AI files
 AGENTS.md

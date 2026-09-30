@@ -7,7 +7,7 @@ from outscraper import OutscraperClient
 import boto3
 import dotenv
 
-from model import Model
+from google_search_pipeline.models import Model
 
 dotenv.load_dotenv()
 
@@ -20,16 +20,6 @@ def get_google_maps_raw(query: str, limit: int = 3, language: str = "en") -> lis
         language=language
     )
     return google_maps_results
-
-def get_clean_models(google_maps_results: list[dict]) -> list[Model]:
-    instances = []
-
-    for places in google_maps_results:
-        for place in places:
-            model_instance = Model(**place)
-            instances.append(model_instance)
-
-    return instances
 
 def upload_files_s3(raw: list[dict], locality: str, category: str) -> bool:
 

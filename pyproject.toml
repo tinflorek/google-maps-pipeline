@@ -1,13 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "google-search-pipeline"
 version = "0.1.0"
-description = "Add your description here"
+description = "Google Search data pipeline"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "apache-airflow[celery]==3.3.2",
+    "apache-airflow-providers-fab",
     "boto3>=1.43.100",
-    "dotenv>=0.9.9",
     "outscraper>=6.0.4",
     "pydantic>=2.13.5",
-    "typesafe-sdk>=0.7.1",
+    "python-dotenv>=1.2.3",
+    "snowflake-connector-python>=4.7.5",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["google_search_pipeline*"]
