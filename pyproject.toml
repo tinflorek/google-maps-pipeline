@@ -15,7 +15,7 @@ dependencies = [
     "outscraper>=6.0.4",
     "pydantic>=2.13.5",
     "python-dotenv>=1.2.3",
-    "snowflake-connector-python>=4.7.5",
+    "snowflake-connector-python[secure-local-storage]>=4.7.5",
 ]
 
 [tool.setuptools.packages.find]

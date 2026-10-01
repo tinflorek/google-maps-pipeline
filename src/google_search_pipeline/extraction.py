@@ -21,24 +21,26 @@ def get_google_maps_raw(query: str, limit: int = 3, language: str = "en") -> lis
     )
     return google_maps_results
 
-def upload_files_s3(raw: list[dict], locality: str, category: str) -> bool:
+def upload_files_s3(raw: list[dict], locality: str, category: str) -> str:
 
     s3_client = boto3.client('s3')
     bucket = os.getenv("S3_BUCKET_NAME")
 
     today = date.today().isoformat()
 
+    key = f"raw/outscraper/{locality}/{category}/{today}/run_{int(time.time())}.json"
+
     try:
         s3_client.put_object(
             Bucket=bucket,
-            Key=f"raw/outscraper/{locality}/{category}/{today}/run_{int(time.time())}.json",
+            Key=key,
             Body=json.dumps(raw, ensure_ascii=False).encode("utf-8"),
             ContentType="application/json; charset=utf-8",
         )
     except Exception as e:
         print(f"Error occurred while uploading to S3: {e}")
-        return False
-    return True
+        return ""
+    return key
     
 if __name__ == "__main__":
     queries = [
