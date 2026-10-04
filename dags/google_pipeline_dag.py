@@ -1,7 +1,7 @@
 from airflow.sdk import dag, task
 
 from google_search_pipeline.extraction import get_google_maps_raw, upload_files_s3
-from google_search_pipeline.storage import load_snowflake
+from google_search_pipeline.storage import load_snowflake, load_staging
 
 @dag(
     dag_id="google_pipeline_dag",
@@ -32,10 +32,18 @@ def google_pipeline_dag():
 
         return load_snowflake(file_in_stage)
 
+    @task.python
+    def transform_data(s3_key: str):
+        stage_prefix = "raw/outscraper/"
+        file_in_stage = s3_key.removeprefix(stage_prefix)
+
+        return load_staging(file_in_stage)
+
     raw = get_google_maps_data()
     upload = upload_to_s3(raw)
     snowflake_load = load_to_snowflake(upload)
+    staging_load = transform_data(upload)
 
-    raw >> upload >> snowflake_load
+    raw >> upload >> snowflake_load >> staging_load
 
 google_pipeline_dag()

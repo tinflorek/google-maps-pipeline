@@ -8,7 +8,12 @@ wheels/
 
 # Application-specific files
 output/
-logs/
+
+logs/*
+!logs/.gitkeep
+
+plugins/*
+!plugins/.gitkeep
 
 # Virtual environments
 .venv
@@ -17,4 +22,5 @@ logs/
 AGENTS.md
 CONTEXT.md
 
+# Environment variables
 .env
